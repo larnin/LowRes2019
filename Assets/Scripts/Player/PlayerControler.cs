@@ -36,11 +36,12 @@ public class PlayerControler : MonoBehaviour
     bool m_canGrabLadder = false;
 
     Rigidbody2D m_rigidbody;
+    PlayerInteract m_playerItem;
 
-    
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
+        m_playerItem = GetComponent<PlayerInteract>();
 
         m_defaultGravityScale = m_rigidbody.gravityScale;
     }
@@ -138,8 +139,7 @@ public class PlayerControler : MonoBehaviour
 
     bool CanUseLadders()
     {
-        //todo add test for used object
-        return true;
+        return m_playerItem.GetCurrentItem() == ItemType.empty;
     }
     
     void EnterLadder()
