@@ -14,6 +14,7 @@ public class TorchItem : BaseInteractable
         m_lightControler = GetComponentInChildren<LightItem>();
         if (m_lightControler == null)
             Debug.LogError("The torch need a LightItem");
+        m_lightControler.gameObject.SetActive(m_alight);
     }
 
     public override bool CanUseAction1()

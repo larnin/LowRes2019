@@ -3,12 +3,12 @@ using System.Collections;
 
 public class LightItem : MonoBehaviour
 {
-    [SerializeField] float m_radius;
+    [SerializeField] float m_radius = 1;
 
     private void Awake()
     {
         var placeholder = transform.Find("Placeholder");
-        placeholder.localScale = new Vector3(m_radius / 16, m_radius / 16, m_radius / 16);
+        placeholder.localScale = new Vector3(m_radius / 8, m_radius / 8, m_radius / 8);
     }
 
     private void OnEnable()

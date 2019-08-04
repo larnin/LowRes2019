@@ -14,7 +14,7 @@ public class PlayerInteract : MonoBehaviour
     string interaction1Button = "Action1";
     string interaction2Button = "Action2";
 
-    [SerializeField] float m_interactionRadius;
+    [SerializeField] float m_interactionRadius = 1;
     [SerializeField] LayerMask m_interactionLayer;
     [SerializeField] float m_waterDetectionRadius = 1;
     [SerializeField] LayerMask m_waterLayer;
@@ -39,9 +39,11 @@ public class PlayerInteract : MonoBehaviour
         if (m_itemType == ItemType.torch_on)
             m_lightItem.gameObject.SetActive(false);
 
+        Debug.Log("Set Item from " + m_itemType + " to " + type);
+
         m_itemType = type;
 
-        if (m_itemType == ItemType.torch_off)
+        if (m_itemType == ItemType.torch_on)
             m_lightItem.gameObject.SetActive(true);
     }
 
@@ -53,6 +55,8 @@ public class PlayerInteract : MonoBehaviour
     private void Start()
     {
         m_lightItem = GetComponentInChildren<LightItem>();
+        if (m_itemType != ItemType.torch_on)
+            m_lightItem.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -62,10 +66,13 @@ public class PlayerInteract : MonoBehaviour
 
         BaseInteractable interactable = m_lockedInteractable == null ? m_currentInteractable : m_lockedInteractable;
 
-        if (interactable.CanUseAction1() && Input.GetButtonDown(interaction1Button))
-            interactable.ExecAction1(gameObject);
-        if (interactable.CanUseAction2() && Input.GetButtonDown(interaction2Button))
-            interactable.ExecAction2(gameObject);
+        if (interactable != null)
+        {
+            if (interactable.CanUseAction1() && Input.GetButtonDown(interaction1Button))
+                interactable.ExecAction1(gameObject);
+            if (interactable.CanUseAction2() && Input.GetButtonDown(interaction2Button))
+                interactable.ExecAction2(gameObject);
+        }
 
         if (m_itemType == ItemType.torch_on )
         {
@@ -90,10 +97,16 @@ public class PlayerInteract : MonoBehaviour
 
             if (m_itemType == ItemType.empty || comp.OverrideItem())
             {
-                Vector2 currentPos = nextInteractable.transform.position;
-                Vector2 itemPos = c.transform.position;
+                bool canAdd = true;
+                if (nextInteractable != null)
+                {
+                    Vector2 currentPos = nextInteractable.transform.position;
+                    Vector2 itemPos = c.transform.position;
+                    if ((itemPos - pos).sqrMagnitude >= (currentPos - pos).sqrMagnitude)
+                        canAdd = false;
+                }
 
-                if ((itemPos - pos).sqrMagnitude < (currentPos - pos).sqrMagnitude)
+                if (canAdd)
                     nextInteractable = comp;
             }
         }
@@ -106,11 +119,14 @@ public class PlayerInteract : MonoBehaviour
                                                                      , gameObject));
         }
 
-        Vector2 interactablePos = m_currentInteractable.transform.position;
-        if ((interactablePos - pos).sqrMagnitude > m_interactionRadius * m_interactionRadius)
+        if (m_currentInteractable != null)
         {
-            m_currentInteractable = null;
-            Event<StopActionTextEvent>.Broadcast(new StopActionTextEvent(gameObject));
+            Vector2 interactablePos = m_currentInteractable.transform.position;
+            if ((interactablePos - pos).sqrMagnitude > m_interactionRadius * m_interactionRadius)
+            {
+                m_currentInteractable = null;
+                Event<StopActionTextEvent>.Broadcast(new StopActionTextEvent(gameObject));
+            }
         }
     }
 }
