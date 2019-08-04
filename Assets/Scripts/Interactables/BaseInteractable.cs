@@ -8,7 +8,7 @@ public abstract class BaseInteractable : MonoBehaviour
     public virtual bool CanUseAction2() { return false; }
     public virtual string GetAction1Name() { return null; }
     public virtual string GetAction2Name() { return null; }
-    public virtual void ExecAction1() { }
-    public virtual void ExecAction2() { }
+    public virtual void ExecAction1(GameObject target) { }
+    public virtual void ExecAction2(GameObject target) { }
 
 }

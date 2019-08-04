@@ -16,6 +16,8 @@ public class PlayerInteract : MonoBehaviour
 
     [SerializeField] float m_interactionRadius;
     [SerializeField] LayerMask m_interactionLayer;
+    [SerializeField] float m_waterDetectionRadius = 1;
+    [SerializeField] LayerMask m_waterLayer;
 
     ItemType m_itemType = ItemType.empty;
 
@@ -61,9 +63,16 @@ public class PlayerInteract : MonoBehaviour
         BaseInteractable interactable = m_lockedInteractable == null ? m_currentInteractable : m_lockedInteractable;
 
         if (interactable.CanUseAction1() && Input.GetButtonDown(interaction1Button))
-            interactable.ExecAction1();
+            interactable.ExecAction1(gameObject);
         if (interactable.CanUseAction2() && Input.GetButtonDown(interaction2Button))
-            interactable.ExecAction2();
+            interactable.ExecAction2(gameObject);
+
+        if (m_itemType == ItemType.torch_on )
+        {
+            var c = Physics2D.OverlapCircle(transform.position, m_waterDetectionRadius, m_waterLayer.value);
+            if (c != null)
+                SetCurrentItem(ItemType.torch_off);
+        }
     }
 
     void UpdateCurrentInteractable()
