@@ -38,6 +38,8 @@ public class PlayerControler : MonoBehaviour
     Rigidbody2D m_rigidbody;
     PlayerInteract m_playerItem;
 
+    bool m_facingRight = true;
+
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
@@ -89,6 +91,9 @@ public class PlayerControler : MonoBehaviour
         else velocity.x = m_moveSpeed * m_buttonMoveDir;
 
         m_rigidbody.velocity = velocity;
+
+        if (Mathf.Abs(velocity.x) > 0.1f)
+            m_facingRight = velocity.x > 0;
     }
 
     void UpdateLadder()
@@ -159,5 +164,10 @@ public class PlayerControler : MonoBehaviour
         m_rigidbody.gravityScale = m_defaultGravityScale;
 
         m_onLadder = false;
+    }
+
+    public bool IsFacingRight()
+    {
+        return m_facingRight;
     }
 }

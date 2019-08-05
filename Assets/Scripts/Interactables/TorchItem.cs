@@ -17,12 +17,12 @@ public class TorchItem : BaseInteractable
         m_lightControler.gameObject.SetActive(m_alight);
     }
 
-    public override bool CanUseAction1()
+    public override bool CanUseAction1(GameObject target)
     {
         return true;
     }
 
-    public override string GetAction1Name()
+    public override string GetAction1Name(GameObject target)
     {
         return "Take";
     }

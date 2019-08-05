@@ -860,7 +860,6 @@ GameObject:
   - component: {fileID: 1175918400}
   - component: {fileID: 1175918399}
   - component: {fileID: 1175918401}
-  - component: {fileID: 1175918403}
   - component: {fileID: 1175918402}
   m_Layer: 8
   m_Name: Player
@@ -1017,26 +1016,6 @@ MonoBehaviour:
   m_waterLayer:
     serializedVersion: 2
     m_Bits: 16
---- !u!114 &1175918403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1175918396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 393e4a72000661e4193b6e076b294c98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_interactionRadius: 1
-  m_interactionLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  m_waterDetectionRadius: 1
-  m_waterLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1253999087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,7 +1206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c2a4daf7b1b8864c825e2f3ed5e0e26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_alight: 0
+  m_alight: 1
   m_waterDetectionRadius: 2
   m_waterLayer:
     serializedVersion: 2

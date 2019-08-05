@@ -18,10 +18,16 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] LayerMask m_interactionLayer;
     [SerializeField] float m_waterDetectionRadius = 1;
     [SerializeField] LayerMask m_waterLayer;
+    [SerializeField] GameObject m_torchOnPrefab = null;
+    [SerializeField] GameObject m_torchOffPrefab = null;
+    [SerializeField] float m_throwPower = 1;
+    [SerializeField] float m_throwAngle = 10;
+    [SerializeField] Vector2 m_dropOffset = new Vector2(0, 2);
 
     ItemType m_itemType = ItemType.empty;
 
     LightItem m_lightItem;
+    PlayerControler m_controler;
 
     BaseInteractable m_currentInteractable;
     BaseInteractable m_lockedInteractable;
@@ -57,6 +63,7 @@ public class PlayerInteract : MonoBehaviour
         m_lightItem = GetComponentInChildren<LightItem>();
         if (m_itemType != ItemType.torch_on)
             m_lightItem.gameObject.SetActive(false);
+        m_controler = GetComponent<PlayerControler>();
     }
 
     private void Update()
@@ -68,10 +75,17 @@ public class PlayerInteract : MonoBehaviour
 
         if (interactable != null)
         {
-            if (interactable.CanUseAction1() && Input.GetButtonDown(interaction1Button))
+            if (interactable.CanUseAction1(gameObject) && Input.GetButtonDown(interaction1Button))
                 interactable.ExecAction1(gameObject);
-            if (interactable.CanUseAction2() && Input.GetButtonDown(interaction2Button))
+            if (interactable.CanUseAction2(gameObject) && Input.GetButtonDown(interaction2Button))
                 interactable.ExecAction2(gameObject);
+        }
+        else
+        {
+            if(Input.GetButtonDown(interaction1Button))
+                ExecAction1();
+            if (Input.GetButtonDown(interaction2Button))
+                ExecAction2();
         }
 
         if (m_itemType == ItemType.torch_on )
@@ -95,7 +109,7 @@ public class PlayerInteract : MonoBehaviour
             if (comp == null)
                 continue;
 
-            if (m_itemType == ItemType.empty || comp.OverrideItem())
+            if (m_itemType == ItemType.empty || comp.OverrideItem(gameObject))
             {
                 bool canAdd = true;
                 if (nextInteractable != null)
@@ -114,8 +128,8 @@ public class PlayerInteract : MonoBehaviour
         if (nextInteractable != m_currentInteractable)
         {
             m_currentInteractable = nextInteractable;
-            Event<AddActionTextEvent>.Broadcast(new AddActionTextEvent(m_currentInteractable.CanUseAction1() ? m_currentInteractable.GetAction1Name() : null
-                                                                     , m_currentInteractable.CanUseAction2() ? m_currentInteractable.GetAction2Name() : null
+            Event<AddActionTextEvent>.Broadcast(new AddActionTextEvent(m_currentInteractable.CanUseAction1(gameObject) ? m_currentInteractable.GetAction1Name(gameObject) : null
+                                                                     , m_currentInteractable.CanUseAction2(gameObject) ? m_currentInteractable.GetAction2Name(gameObject) : null
                                                                      , gameObject));
         }
 
@@ -126,7 +140,68 @@ public class PlayerInteract : MonoBehaviour
             {
                 m_currentInteractable = null;
                 Event<StopActionTextEvent>.Broadcast(new StopActionTextEvent(gameObject));
+
+                if(m_lockedInteractable == null)
+                    Event<AddActionTextEvent>.Broadcast(new AddActionTextEvent(GetAction1Name(), GetAction2Name(), gameObject));
             }
         }
+    }
+
+    void ExecAction1()
+    {
+        if (m_itemType == ItemType.torch_off || m_itemType == ItemType.torch_on)
+        {
+            var obj = Instantiate(m_itemType == ItemType.torch_on ? m_torchOnPrefab : m_torchOffPrefab);
+
+            var offset = m_dropOffset;
+            var facing = m_controler.IsFacingRight();
+            if (!facing)
+                offset.x *= -1;
+
+            obj.transform.position = transform.position + new Vector3(m_dropOffset.x, m_dropOffset.y, 0);
+
+            SetCurrentItem(ItemType.empty);
+        }
+    }
+
+    void ExecAction2()
+    {
+        if (m_itemType == ItemType.torch_off || m_itemType == ItemType.torch_on)
+        {
+            var obj = Instantiate(m_itemType == ItemType.torch_on ? m_torchOnPrefab : m_torchOffPrefab);
+
+            var offset = m_dropOffset;
+            var facing = m_controler.IsFacingRight();
+            if (!facing)
+                offset.x *= -1;
+
+            obj.transform.position = transform.position + new Vector3(m_dropOffset.x, m_dropOffset.y, 0);
+
+            var rigidbody = obj.GetComponent<Rigidbody2D>();
+            if(rigidbody != null)
+            {
+                var dir = new Vector2(Mathf.Cos(m_throwAngle), Mathf.Sin(m_throwAngle)) * m_throwPower;
+                if (!facing)
+                    dir.x *= -1;
+                rigidbody.velocity = dir;
+            }
+
+            SetCurrentItem(ItemType.empty);
+        }
+    }
+
+    string GetAction1Name()
+    {
+        if (m_itemType == ItemType.torch_off || m_itemType == ItemType.torch_on)
+            return "Drop";
+
+        return null;
+    }
+
+    string GetAction2Name()
+    {
+        if (m_itemType == ItemType.torch_off || m_itemType == ItemType.torch_on)
+            return "Throw";
+        return null;
     }
 }
