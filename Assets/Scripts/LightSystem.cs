@@ -60,4 +60,17 @@ public class LightSystem : MonoBehaviour
         }
         return false;
     }
+
+    public List<Vector4> GetLightParams()
+    {
+        var lights = new List<Vector4>();
+
+        foreach(var l in m_lights)
+        {
+            var pos = l.transform.position;
+            lights.Add(new Vector4(pos.x, pos.y, pos.z, l.radius));
+        }
+
+        return lights;
+    }
 }

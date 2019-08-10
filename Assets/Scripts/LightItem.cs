@@ -7,8 +7,7 @@ public class LightItem : MonoBehaviour
 
     private void Awake()
     {
-        var placeholder = transform.Find("Placeholder");
-        placeholder.localScale = new Vector3(m_radius / 8, m_radius / 8, m_radius / 8);
+        
     }
 
     private void OnEnable()
