@@ -3732,7 +3732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caf929aa8abc9e468e5dc3d09df8a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_radius: 30
+  m_radius: 15
 --- !u!1 &1058821749
 GameObject:
   m_ObjectHideFlags: 0
@@ -4013,7 +4013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caf929aa8abc9e468e5dc3d09df8a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_radius: 40
+  m_radius: 20
 --- !u!1 &1175918396
 GameObject:
   m_ObjectHideFlags: 0
@@ -6526,6 +6526,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b09ebc9129b8444c93c8b37690532d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_radiusSpeed: 3
+  m_radiusOffset: 0.5
+  m_posSpeed: 1
+  m_posOffset: 0.2
+  m_lightingTime: 0.4
 --- !u!4 &1846131707
 Transform:
   m_ObjectHideFlags: 0

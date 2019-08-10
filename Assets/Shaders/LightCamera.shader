@@ -66,7 +66,9 @@
 				if (lightValue > 1.5)
 					lightValue = 1.5;
 
-				lightValue = floor(lightValue * 3 + 0.5) / 3 + _Ambiant;
+				lightValue = floor(lightValue * 3 + 0.5) / 3;
+				if (lightValue < _Ambiant)
+					lightValue = _Ambiant;
 
                 return col * lightValue;
             }

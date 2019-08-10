@@ -52,13 +52,16 @@ public class LightCameraEffect : MonoBehaviour
         {
             var l = lights[i];
             l.x -= pos.x - size;
-            l.y -= pos.y + size;
-            l.y *= -1;
+            l.y -= pos.y - size;
 
             lights[i] = l;
         }
 
-        if(lights.Count <= maxLightNb)
+        if(lights.Count == 0)
+        {
+            material.SetInt(lightCountName, 0);
+        }
+        else if(lights.Count <= maxLightNb)
         {
             material.SetVectorArray(lightsName, lights.ToArray());
             material.SetInt(lightCountName, lights.Count);
