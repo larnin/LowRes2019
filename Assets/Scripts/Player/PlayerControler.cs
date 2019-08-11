@@ -48,6 +48,13 @@ public class PlayerControler : MonoBehaviour
     bool m_facingRight = true;
     bool m_idle;
 
+    private void Awake()
+    {
+        if (instance != null)
+            Debug.LogError("More than one player instancied");
+        instance = this;
+    }
+
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
@@ -114,7 +121,7 @@ public class PlayerControler : MonoBehaviour
         {
             m_facingRight = velocity.x > 0;
             m_spriteRenderer.flipX = !m_facingRight;
-            m_spriteTransform.localPosition = new Vector3(m_spriteOriginalXPos * (m_facingRight ? 1 : -1), m_spriteTransform.localPosition.y, m_spriteTransform.localPosition.z);
+            m_spriteTransform.localPosition = new Vector3(m_spriteOriginalXPos * (m_facingRight ? 1.01f : -1), m_spriteTransform.localPosition.y, m_spriteTransform.localPosition.z);
             m_idle = false;
         }
         else m_idle = true;

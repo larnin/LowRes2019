@@ -4,7 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
 	}
-		SubShader
+	SubShader
 	{
 		// No culling or depth
 		Cull Off ZWrite Off ZTest Always
@@ -18,6 +18,7 @@
 			#include "UnityCG.cginc"
 
 			uniform float4 _Lights[20];
+			uniform float4 _LightsColor[20];
 			uniform int _LightCount = 0;
 			uniform float _MaxLightDistance = 20;
 			uniform float _Ambiant = 0;
@@ -50,6 +51,7 @@
 
 				float lightValue = 0;
 				float2 pos = i.vertex.xy;
+				float4 color;
 				for (int i = 0; i < _LightCount; i++)
 				{
 					float2 lPos = _Lights[i].xy;
@@ -62,7 +64,10 @@
 
 					float l = dist > _MaxLightDistance ? 1 : dist / _MaxLightDistance;
 					lightValue += l;
+					color += l * _LightsColor[i];
 				}
+				color /= lightValue;
+
 				if (lightValue > 1.5)
 					lightValue = 1.5;
 
@@ -70,7 +75,7 @@
 				if (lightValue < _Ambiant)
 					lightValue = _Ambiant;
 
-                return col * lightValue;
+				return col * lightValue * color;
             }
             ENDCG
         }

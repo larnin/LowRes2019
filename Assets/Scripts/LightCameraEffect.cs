@@ -3,11 +3,11 @@ using System.Collections;
 
 [RequireComponent(typeof(Camera))]
 [ExecuteInEditMode]
-
 public class LightCameraEffect : MonoBehaviour
 {
     string lightCountName = "_LightCount";
     string lightsName = "_Lights";
+    string colorsName = "_LightsColor";
     string maxDistanceName = "_MaxLightDistance";
     string ambiantName = "_Ambiant";
     int maxLightNb = 20;
@@ -50,11 +50,11 @@ public class LightCameraEffect : MonoBehaviour
 
         for (int i = 0; i < lights.Count; i++)
         {
-            var l = lights[i];
+            var l = lights[i].pos;
             l.x -= pos.x - size;
             l.y -= pos.y - size;
 
-            lights[i] = l;
+            lights[i].pos = l;
         }
 
         if(lights.Count == 0)
@@ -64,24 +64,35 @@ public class LightCameraEffect : MonoBehaviour
         else if(lights.Count <= maxLightNb)
         {
             var lightsArray = new Vector4[maxLightNb];
+            var colorArray = new Color[maxLightNb];
+
             for (int i = 0; i < lights.Count; i++)
-                lightsArray[i] = lights[i];
+            {
+                lightsArray[i] = lights[i].pos;
+                colorArray[i] = lights[i].color;
+            }
             material.SetVectorArray(lightsName, lightsArray);
+            material.SetColorArray(colorsName, colorArray);
             material.SetInt(lightCountName, lights.Count);
         }
         else
         {
             lights.Sort((x, y) => 
             {
-                var d1 = (pos - new Vector2(x.x, x.y)).sqrMagnitude;
-                var d2 = (pos - new Vector2(y.x, y.y)).sqrMagnitude;
+                var d1 = (pos - new Vector2(x.pos.x, x.pos.y)).sqrMagnitude;
+                var d2 = (pos - new Vector2(y.pos.x, y.pos.y)).sqrMagnitude;
                 return d1.CompareTo(d2);
             });
 
             var lightsArray = new Vector4[maxLightNb];
+            var colorArray = new Color[maxLightNb];
             for (int i = 0; i < maxLightNb; i++)
-                lightsArray[i] = lights[i];
+            {
+                lightsArray[i] = lights[i].pos;
+                colorArray[i] = lights[i].color;
+            }
             material.SetVectorArray(lightsName, lightsArray);
+            material.SetColorArray(colorsName, colorArray);
             material.SetInt(lightCountName, maxLightNb);
         }
 

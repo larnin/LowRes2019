@@ -3,6 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using NRand;
 
+public class LightParam
+{
+    public LightParam(Vector4 _pos, Color _color)
+    {
+        pos = _pos;
+        color = _color;
+    }
+
+    public Vector4 pos;
+    public Color color;
+}
+
 public class LightSystem : MonoBehaviour
 {
     [SerializeField] float m_radiusSpeed = 1;
@@ -13,10 +25,11 @@ public class LightSystem : MonoBehaviour
 
     class LightInfo
     {
-        public LightInfo(float _radius, Transform _transform)
+        public LightInfo(float _radius, Transform _transform, Color _color)
         {
             radius = _radius;
             transform = _transform;
+            color = _color;
         }
 
         public float radius;
@@ -27,19 +40,22 @@ public class LightSystem : MonoBehaviour
         public float radiusOffsetTarget = 0;
         public Vector2 posOffset = Vector2.zero;
         public Vector2 offsetTarget = Vector2.zero;
+        public Color color;
     }
 
     class LightOffInfo
     {
-        public LightOffInfo(float _radius, Vector2 _pos)
+        public LightOffInfo(float _radius, Vector2 _pos, Color _color)
         {
             baseRadius = _radius;
             pos = _pos;
+            color = _color;
         }
 
         public float baseRadius;
         public Vector2 pos;
         public float time = 0;
+        public Color color;
     }
 
     public static LightSystem instance { get; private set; }
@@ -55,7 +71,7 @@ public class LightSystem : MonoBehaviour
         instance = this;
     }
 
-    public void AddLight(Transform transform, float radius)
+    public void AddLight(Transform transform, float radius, Color color)
     {
         if (transform == null)
             return;
@@ -63,8 +79,11 @@ public class LightSystem : MonoBehaviour
         var item = m_lights.Find(x => { return x.transform == transform; });
 
         if (item != null)
+        {
             item.radius = radius;
-        else m_lights.Add(new LightInfo(radius, transform));
+            item.color = color;
+        }
+        else m_lights.Add(new LightInfo(radius, transform, color));
     }
 
     public void RemoveLight(Transform transform)
@@ -73,7 +92,7 @@ public class LightSystem : MonoBehaviour
         {
             if(m_lights[i].transform == transform)
             {
-                m_lightsOff.Add(new LightOffInfo(m_lights[i].radius, m_lights[i].transform.position));
+                m_lightsOff.Add(new LightOffInfo(m_lights[i].radius, m_lights[i].transform.position, m_lights[i].color));
                 m_lights.RemoveAt(i);
                 break;
             }
@@ -97,20 +116,20 @@ public class LightSystem : MonoBehaviour
         return false;
     }
 
-    public List<Vector4> GetLightParams()
+    public List<LightParam> GetLightParams()
     {
-        var lights = new List<Vector4>();
+        var lights = new List<LightParam>();
 
         foreach(var l in m_lights)
         {
             var pos = l.transform.position + new Vector3(l.posOffset.x, l.posOffset.y, 0);
-            lights.Add(new Vector4(pos.x, pos.y, pos.z, l.radius + l.radiusOffset));
+            lights.Add(new LightParam(new Vector4(pos.x, pos.y, pos.z, l.radius + l.radiusOffset), l.color));
         }
 
         foreach(var l in m_lightsOff)
         {
             float radius = (1 - (l.time / m_lightingTime)) * l.baseRadius;
-            lights.Add(new Vector4(l.pos.x, l.pos.y, 0, radius));
+            lights.Add(new LightParam(new Vector4(l.pos.x, l.pos.y, 0, radius), l.color));
         }
 
         return lights;

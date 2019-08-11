@@ -4,6 +4,7 @@ using System.Collections;
 public class LightItem : MonoBehaviour
 {
     [SerializeField] float m_radius = 1;
+    [SerializeField] Color color = Color.white;
 
     bool m_added = false;
 
@@ -43,7 +44,7 @@ public class LightItem : MonoBehaviour
 
             if (instance != null)
             {
-                instance.AddLight(transform, m_radius);
+                instance.AddLight(transform, m_radius, color);
                 m_added = true;
             }
         }
