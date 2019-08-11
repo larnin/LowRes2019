@@ -38,12 +38,20 @@ public class PlayerControler : MonoBehaviour
     Rigidbody2D m_rigidbody;
     PlayerInteract m_playerItem;
 
+    Transform m_spriteTransform;
+    float m_spriteOriginalXPos;
+    SpriteRenderer m_spriteRenderer;
+
     bool m_facingRight = true;
 
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_playerItem = GetComponent<PlayerInteract>();
+
+        m_spriteTransform = transform.Find("Sprite");
+        m_spriteOriginalXPos = m_spriteTransform.localPosition.x;
+        m_spriteRenderer = m_spriteTransform.GetComponent<SpriteRenderer>();
 
         m_defaultGravityScale = m_rigidbody.gravityScale;
     }
@@ -93,7 +101,11 @@ public class PlayerControler : MonoBehaviour
         m_rigidbody.velocity = velocity;
 
         if (Mathf.Abs(velocity.x) > 0.1f)
+        {
             m_facingRight = velocity.x > 0;
+            m_spriteRenderer.flipX = !m_facingRight;
+            m_spriteTransform.localPosition = new Vector3(m_spriteOriginalXPos * (m_facingRight ? 1 : -1), m_spriteTransform.localPosition.y, m_spriteTransform.localPosition.z);
+        }
     }
 
     void UpdateLadder()
