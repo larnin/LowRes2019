@@ -22,6 +22,7 @@
 			uniform int _LightCount = 0;
 			uniform float _MaxLightDistance = 20;
 			uniform float _Ambiant = 0;
+			uniform float4 _AmbiantColor;
 
             struct appdata
             {
@@ -51,7 +52,7 @@
 
 				float lightValue = 0;
 				float2 pos = i.vertex.xy;
-				float4 color;
+				float4 color = (0,0,0,0);
 				for (int i = 0; i < _LightCount; i++)
 				{
 					float2 lPos = _Lights[i].xy;
@@ -73,7 +74,10 @@
 
 				lightValue = floor(lightValue * 3 + 0.5) / 3;
 				if (lightValue < _Ambiant)
+				{
+					color = _AmbiantColor;
 					lightValue = _Ambiant;
+				}
 
 				return col * lightValue * color;
             }

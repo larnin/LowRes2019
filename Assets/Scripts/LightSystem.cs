@@ -99,7 +99,7 @@ public class LightSystem : MonoBehaviour
         }
     }
 
-    bool IsOnLight(Transform transform)
+    public bool IsOnLight(Transform transform)
     {
         return IsOnLight(transform.position);
     }
@@ -110,7 +110,7 @@ public class LightSystem : MonoBehaviour
         {
             Vector2 lPos = l.transform.position;
 
-            if ((lPos - pos).sqrMagnitude < l.radius)
+            if ((lPos - pos).sqrMagnitude < l.radius * l.radius)
                 return true;
         }
         return false;
@@ -139,6 +139,8 @@ public class LightSystem : MonoBehaviour
     {
         UpdateLights();
         UpdateLightsOff();
+
+        DebugLight();
     }
 
     void UpdateLights()
@@ -191,5 +193,21 @@ public class LightSystem : MonoBehaviour
             l.time += Time.deltaTime;
 
         m_lightsOff.RemoveAll(x => { return x.time >= m_lightingTime; });
+    }
+
+    void DebugLight()
+    {
+        foreach(var l in m_lights)
+        {
+            int segments = 10;
+            float step = 2 * Mathf.PI / segments;
+            for(int i = 0; i < segments; i++)
+            {
+                Vector2 pos1 = new Vector2(Mathf.Cos(step * i), Mathf.Sin(step * i)) * l.radius;
+                Vector2 pos2 = new Vector2(Mathf.Cos(step * (i + 1)), Mathf.Sin(step * (i + 1))) * l.radius;
+
+                Debug.DrawLine(new Vector3(pos1.x, pos1.y, 0) + l.transform.position, new Vector3(pos2.x, pos2.y, 0) + l.transform.position, l.color);
+            }
+        }
     }
 }

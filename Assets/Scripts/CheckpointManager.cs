@@ -39,7 +39,10 @@ public class CheckpointManager : MonoBehaviour
     public void MovePlayerToSpawn()
     {
         if (m_currentSpawnName == "")
+        {
+            Event<CameraInstantMoveEvent>.Broadcast(new CameraInstantMoveEvent(PlayerControler.instance.transform.position));
             return;
+        }
 
         var it = m_checkpoints.Find(x => { return x.GetID() == m_currentSpawnName; });
         if (it == null)

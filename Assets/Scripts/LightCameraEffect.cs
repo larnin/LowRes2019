@@ -10,10 +10,13 @@ public class LightCameraEffect : MonoBehaviour
     string colorsName = "_LightsColor";
     string maxDistanceName = "_MaxLightDistance";
     string ambiantName = "_Ambiant";
+    string ambiantColorName = "_AmbiantColor";
     int maxLightNb = 20;
 
     [SerializeField] float m_lightMaxDistance = 20;
     [SerializeField] float m_ambiantLightValue = 0.1f;
+    [SerializeField] Color m_ambiantLightColor = Color.white;
+    [SerializeField] float m_lightRadiusIncrease = 0;
 
     public Material material;
 
@@ -53,6 +56,7 @@ public class LightCameraEffect : MonoBehaviour
             var l = lights[i].pos;
             l.x -= pos.x - size;
             l.y -= pos.y - size;
+            l.w += m_lightRadiusIncrease;
 
             lights[i].pos = l;
         }
@@ -98,5 +102,6 @@ public class LightCameraEffect : MonoBehaviour
 
         material.SetFloat(maxDistanceName, m_lightMaxDistance);
         material.SetFloat(ambiantName, m_ambiantLightValue);
+        material.SetColor(ambiantColorName, m_ambiantLightColor);
     }
 }

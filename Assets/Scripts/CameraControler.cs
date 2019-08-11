@@ -26,6 +26,7 @@ public class CameraControler : MonoBehaviour
     {
         m_subscriberList.Add(new Event<CameraRegisterObjectEvent>.Subscriber(OnRegisterObject));
         m_subscriberList.Add(new Event<CameraUnregisterObjectEvent>.Subscriber(OnUnregisterObject));
+        m_subscriberList.Add(new Event<CameraInstantMoveEvent>.Subscriber(OnInstantMove));
         m_subscriberList.Subscribe();
     }
 
