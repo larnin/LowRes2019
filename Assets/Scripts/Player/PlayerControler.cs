@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
+    public static PlayerControler instance { get; private set; }
+
     string horizontalButton = "Horizontal";
     string verticalButton = "Vertical";
     string jumpButton = "Jump";
@@ -57,6 +59,9 @@ public class PlayerControler : MonoBehaviour
         m_spriteRenderer = m_spriteTransform.GetComponent<SpriteRenderer>();
 
         m_defaultGravityScale = m_rigidbody.gravityScale;
+
+        Event<CameraRegisterObjectEvent>.Broadcast(new CameraRegisterObjectEvent(transform, 1));
+        Event<CameraInstantMoveEvent>.Broadcast(new CameraInstantMoveEvent(transform.position));
     }
 
     void Update()
