@@ -14,13 +14,7 @@ public class LightItem : MonoBehaviour
 
     private void OnEnable()
     {
-        var instance = LightSystem.instance;
-
-        if (instance != null)
-        {
-            instance.AddLight(transform, m_radius);
-            m_added = true;
-        }
+        m_added = false;
     }
 
     private void OnDisable()
@@ -44,6 +38,14 @@ public class LightItem : MonoBehaviour
     private void Update()
     {
         if (!m_added)
-            OnEnable();
+        {
+            var instance = LightSystem.instance;
+
+            if (instance != null)
+            {
+                instance.AddLight(transform, m_radius);
+                m_added = true;
+            }
+        }
     }
 }

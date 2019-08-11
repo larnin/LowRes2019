@@ -122,8 +122,10 @@ MonoBehaviour:
   m_waterLayer:
     serializedVersion: 2
     m_Bits: 16
-  m_torchOnPrefab: {fileID: 0}
-  m_torchOffPrefab: {fileID: 0}
+  m_torchOnPrefab: {fileID: 1118858927005307847, guid: 4bef8bc239d7ffe419a0d082f08fb5e1,
+    type: 3}
+  m_torchOffPrefab: {fileID: 818794531372146718, guid: 6f958fe9a320046429318a1ce37201ca,
+    type: 3}
   m_throwPower: 1
   m_throwAngle: 10
   m_dropOffset: {x: 0, y: 2}
@@ -268,4 +270,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caf929aa8abc9e468e5dc3d09df8a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_radius: 10
+  m_radius: 20

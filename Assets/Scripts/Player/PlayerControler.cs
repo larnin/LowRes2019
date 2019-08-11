@@ -37,17 +37,20 @@ public class PlayerControler : MonoBehaviour
 
     Rigidbody2D m_rigidbody;
     PlayerInteract m_playerItem;
+    Animator m_animator;
 
     Transform m_spriteTransform;
     float m_spriteOriginalXPos;
     SpriteRenderer m_spriteRenderer;
 
     bool m_facingRight = true;
+    bool m_idle;
 
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_playerItem = GetComponent<PlayerInteract>();
+        m_animator = GetComponent<Animator>();
 
         m_spriteTransform = transform.Find("Sprite");
         m_spriteOriginalXPos = m_spriteTransform.localPosition.x;
@@ -70,6 +73,8 @@ public class PlayerControler : MonoBehaviour
 
         if(Input.GetButtonDown(jumpButton))
             m_buttonJumpPressTime = 0;
+
+        UpdateAnimator();
     }
 
     void FixedUpdate()
@@ -105,7 +110,9 @@ public class PlayerControler : MonoBehaviour
             m_facingRight = velocity.x > 0;
             m_spriteRenderer.flipX = !m_facingRight;
             m_spriteTransform.localPosition = new Vector3(m_spriteOriginalXPos * (m_facingRight ? 1 : -1), m_spriteTransform.localPosition.y, m_spriteTransform.localPosition.z);
+            m_idle = false;
         }
+        else m_idle = true;
     }
 
     void UpdateLadder()
@@ -181,5 +188,43 @@ public class PlayerControler : MonoBehaviour
     public bool IsFacingRight()
     {
         return m_facingRight;
+    }
+
+    void UpdateAnimator()
+    {
+        string idleName = "Idle";
+        string walkName = "Walking";
+        string jumpingName = "Jumping";
+        string fallingName = "Falling";
+        string pushStateName = "PushState"; //0 = none, 1 = grab, 2 = push, 3 = pull
+        string ladderStateName = "LadderState"; //0 = none, 1 = idle, 2 = down, 3 = up
+        string throwTorchName = "ThrowTorch";
+        string torchStateName = "TorchState"; //0 = empty, 1 = off, 2 = on
+
+        var velocity = m_rigidbody.velocity;
+        var torch = m_playerItem.GetCurrentItem();
+
+        m_animator.SetInteger(torchStateName, torch == ItemType.torch_off ? 1 : (torch == ItemType.torch_on ? 2 : 0));
+
+        if(m_onLadder)
+        {
+            m_animator.SetBool(idleName, false);
+            m_animator.SetBool(walkName, false);
+            m_animator.SetBool(jumpingName, false);
+            m_animator.SetBool(fallingName, false);
+            m_animator.SetInteger(pushStateName, 0);
+
+            m_animator.SetInteger(ladderStateName, (Mathf.Abs(velocity.y) > 0.1f || Mathf.Abs(velocity.x) > 0.1f) ? (velocity.y >= 0 ? 3 : 2) : 1);
+        }
+        else
+        {
+            m_animator.SetBool(idleName, m_grounded && m_idle);
+            m_animator.SetBool(walkName, m_grounded && !m_idle);
+            m_animator.SetBool(jumpingName, !m_grounded && velocity.y > 0);
+            m_animator.SetBool(fallingName, !m_grounded && velocity.y < 0);
+
+            m_animator.SetInteger(pushStateName, 0);
+            m_animator.SetInteger(ladderStateName, 0);
+        }
     }
 }

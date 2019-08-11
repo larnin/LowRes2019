@@ -45,8 +45,6 @@ public class PlayerInteract : MonoBehaviour
         if (m_itemType == ItemType.torch_on)
             m_lightItem.gameObject.SetActive(false);
 
-        Debug.Log("Set Item from " + m_itemType + " to " + type);
-
         m_itemType = type;
 
         if (m_itemType == ItemType.torch_on)

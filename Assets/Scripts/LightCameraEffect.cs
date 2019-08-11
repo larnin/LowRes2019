@@ -63,7 +63,10 @@ public class LightCameraEffect : MonoBehaviour
         }
         else if(lights.Count <= maxLightNb)
         {
-            material.SetVectorArray(lightsName, lights.ToArray());
+            var lightsArray = new Vector4[maxLightNb];
+            for (int i = 0; i < lights.Count; i++)
+                lightsArray[i] = lights[i];
+            material.SetVectorArray(lightsName, lightsArray);
             material.SetInt(lightCountName, lights.Count);
         }
         else
