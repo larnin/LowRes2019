@@ -139,8 +139,6 @@ public class LightSystem : MonoBehaviour
     {
         UpdateLights();
         UpdateLightsOff();
-
-        DebugLight();
     }
 
     void UpdateLights()

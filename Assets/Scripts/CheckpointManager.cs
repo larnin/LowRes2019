@@ -9,6 +9,8 @@ public class CheckpointManager : MonoBehaviour
 
     public static CheckpointManager instance { get; private set; }
 
+    [SerializeField] Vector2 m_spawnOffset = new Vector2(0, 4);
+
     List<CheckpointInteractable> m_checkpoints = new List<CheckpointInteractable>();
 
     string m_currentSpawnName;
@@ -44,7 +46,7 @@ public class CheckpointManager : MonoBehaviour
             return;
         }
 
-        var it = m_checkpoints.Find(x => { return x.GetID() == m_currentSpawnName; });
+        var it = m_checkpoints.Find(x => { return x.GetID().Equals(m_currentSpawnName); });
         if (it == null)
         {
             Debug.Log("Cannot find the saved checkpoint " + m_currentSpawnName);
@@ -54,7 +56,7 @@ public class CheckpointManager : MonoBehaviour
         it.EnablePoint(true);
 
         var pTransform = PlayerControler.instance.transform;
-        pTransform.position = new Vector3(it.transform.position.x, it.transform.position.y, pTransform.position.z);
+        pTransform.position = new Vector3(it.transform.position.x + m_spawnOffset.x, it.transform.position.y + m_spawnOffset.y, pTransform.position.z);
 
         Event<CameraInstantMoveEvent>.Broadcast(new CameraInstantMoveEvent(pTransform.position));
     }
