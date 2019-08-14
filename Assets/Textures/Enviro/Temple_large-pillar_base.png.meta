@@ -1,7 +1,13 @@
 fileFormatVersion: 2
 guid: 5d1ccf1eb82724c47b95f113234d9135
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7154088143123815120
+    second: Temple_large-pillar_base_0
+  - first:
+      213: -631354579492625221
+    second: Temple_large-pillar_base_1
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,9 +46,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 1
@@ -93,11 +99,53 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Temple_large-pillar_base_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5e75806162bd69429b8d6c833bff53f
+      internalID: 7154088143123815120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Temple_large-pillar_base_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b3aa7e92c438e74aa7d3ab58fc97355
+      internalID: -631354579492625221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a4d3f2f24d873974fb5bccfd7a5a63c2
     internalID: 0
     vertices: []
     indices: 
