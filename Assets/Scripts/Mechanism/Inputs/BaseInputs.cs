@@ -16,7 +16,7 @@ public class BaseInputs : MonoBehaviour
 
     bool m_pressState = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         SetPressState(false);
     }

@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BaseOutput : MonoBehaviour
+public abstract class BaseOutput : MonoBehaviour
 {
-
-    public void SetActiveStatus(bool active)
-    {
-
-    }
+    public abstract void SetActiveStatus(bool active);
 }
