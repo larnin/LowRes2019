@@ -52,7 +52,7 @@
 
 				float lightValue = 0;
 				float2 pos = i.vertex.xy;
-				float4 color = (0,0,0,0);
+				float4 color = float4(0,0,0,0);
 				for (int i = 0; i < _LightCount; i++)
 				{
 					float2 lPos = _Lights[i].xy;

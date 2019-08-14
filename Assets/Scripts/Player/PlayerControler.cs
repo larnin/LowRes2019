@@ -105,6 +105,10 @@ public class PlayerControler : MonoBehaviour
         var hit = Physics2D.CircleCast(transform.position, m_groundCheckRadius, Vector2.down, m_groundDistance, m_groundLayer.value);
 
         m_grounded = hit.collider != null;
+
+        if (hit.collider == null)
+            transform.parent = null;
+        else transform.parent = hit.collider.transform;
     }
 
     void UpdateSpeed()
