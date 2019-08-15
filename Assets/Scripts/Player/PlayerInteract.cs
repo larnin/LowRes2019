@@ -66,6 +66,9 @@ public class PlayerInteract : MonoBehaviour
 
     private void Update()
     {
+        if (m_controler.AreControlesDisabled())
+            return;
+
         if (m_lockedInteractable == null)
             UpdateCurrentInteractable();
 

@@ -31,6 +31,10 @@ public class Path : MonoBehaviour
 
     private void Start()
     {
+        m_pos.Clear();
+        m_lenghts.Clear();
+        m_lenght = 0;
+
         for (int i = 0; i < transform.childCount; i++)
             m_pos.Add(transform.GetChild(i).position);
         for (int i = 0; i < m_pos.Count - 1; i++)

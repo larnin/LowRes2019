@@ -48,6 +48,8 @@ public class PlayerControler : MonoBehaviour
     bool m_facingRight = true;
     bool m_idle;
 
+    bool m_disabledControles = false;
+
     private void Awake()
     {
         if (instance != null)
@@ -73,6 +75,9 @@ public class PlayerControler : MonoBehaviour
 
     void Update()
     {
+        if (m_disabledControles)
+            return;
+
         m_buttonMoveDir = Input.GetAxisRaw(horizontalButton);
         if (Mathf.Abs(m_buttonMoveDir) < m_deadzone)
             m_buttonMoveDir = 0;
@@ -91,6 +96,9 @@ public class PlayerControler : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (m_disabledControles)
+            return;
+
         UpdateGrounded();
 
         UpdateLadder();
@@ -242,5 +250,20 @@ public class PlayerControler : MonoBehaviour
             m_animator.SetInteger(pushStateName, 0);
             m_animator.SetInteger(ladderStateName, 0);
         }
+    }
+
+    public void SetControlesDisabled(bool disabled)
+    {
+        m_disabledControles = disabled;
+
+        if (m_disabledControles)
+            m_rigidbody.gravityScale = 0;
+        else m_rigidbody.gravityScale = m_defaultGravityScale;
+        m_rigidbody.velocity = Vector2.zero;
+    }
+
+    public bool AreControlesDisabled()
+    {
+        return m_disabledControles;
     }
 }
