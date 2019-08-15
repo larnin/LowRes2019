@@ -58,4 +58,9 @@ public class BaseInputs : MonoBehaviour
         foreach (var c in m_connectedOutputs)
             c.SetActiveStatus(press);
     }
+
+    public bool PressState()
+    {
+        return m_pressState;
+    }
 }
