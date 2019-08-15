@@ -41,7 +41,7 @@ AnimationClip:
     - time: 0.3
       value: {fileID: 21300000, guid: a280f7da1a03457438204e1acbccd9c5, type: 3}
     attribute: m_Sprite
-    path: SpriteEyes
+    path: Sprite/SpriteEyes
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 10
@@ -59,7 +59,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     - serializedVersion: 2
-      path: 1448933997
+      path: 3915062013
       attribute: 0
       script: {fileID: 0}
       typeID: 212

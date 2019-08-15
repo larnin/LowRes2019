@@ -12,6 +12,7 @@ public class Skully : MonoBehaviour
     Rigidbody2D m_rigidbody;
     Bounds m_allowedZone;
     Transform m_spriteTransform;
+    Transform m_spriteEyeTransform;
 
     void Start()
     {
@@ -34,10 +35,6 @@ public class Skully : MonoBehaviour
         {
             playerPos = PlayerControler.instance.transform.position;
             dist = (playerPos - pos).magnitude;
-
-            var c = Physics2D.Raycast(transform.position, (playerPos - pos) / dist, dist, m_wallLayer.value).collider;
-            if(c != null)
-                Debug.Log(c.gameObject.name);
 
             if (dist <= m_seeDistance && Physics2D.Raycast(transform.position, (playerPos - pos) / dist, dist, m_wallLayer.value).collider == null)
                 seePlayer = true;
