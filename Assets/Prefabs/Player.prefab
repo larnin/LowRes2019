@@ -166,6 +166,10 @@ MonoBehaviour:
   m_deadlyLayer:
     serializedVersion: 2
     m_Bits: 512
+  m_deathPrefab: {fileID: 3384806647595347118, guid: 4786f01857d902244aaf37fcb1050b71,
+    type: 3}
+  m_deathTime: 1
+  m_shakePower: 0.5
 --- !u!1 &1493807507249754789
 GameObject:
   m_ObjectHideFlags: 0

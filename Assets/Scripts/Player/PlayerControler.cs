@@ -73,6 +73,11 @@ public class PlayerControler : MonoBehaviour
         Event<CameraInstantMoveEvent>.Broadcast(new CameraInstantMoveEvent(transform.position));
     }
 
+    private void OnDestroy()
+    {
+        Event<CameraUnregisterObjectEvent>.Broadcast(new CameraUnregisterObjectEvent(transform));
+    }
+
     void Update()
     {
         if (m_disabledControles)

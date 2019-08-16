@@ -111,6 +111,9 @@ public class CartInteractable : BaseInteractable
 
     void OnExitCart()
     {
+        if (m_currentAnimator == null || m_currentControler == null)
+            return;
+
         m_currentControler.SetControlesDisabled(false);
         m_currentControler.transform.parent = null;
 
@@ -120,6 +123,9 @@ public class CartInteractable : BaseInteractable
 
     void Jump(Vector3 target, Action callbackDone)
     {
+        if (m_currentAnimator == null || m_currentControler == null)
+            return;
+
         string idleName = "Idle";
         string walkName = "Walking";
         string jumpingName = "Jumping";
@@ -144,11 +150,17 @@ public class CartInteractable : BaseInteractable
 
         transform.DOMoveY(h, time / 2).SetEase(Ease.OutQuad).OnComplete(()=> 
         {
+            if (m_currentAnimator == null || m_currentControler == null)
+                return;
+
             m_currentAnimator.SetBool(jumpingName, false);
             m_currentAnimator.SetBool(fallingName, true);
 
             transform.DOMoveY(target.y, time / 2).SetEase(Ease.InQuad).OnComplete(()=>
             {
+                if (m_currentAnimator == null || m_currentControler == null)
+                    return;
+
                 m_currentAnimator.SetBool(idleName, true);
                 m_currentAnimator.SetBool(fallingName, false);
             });
