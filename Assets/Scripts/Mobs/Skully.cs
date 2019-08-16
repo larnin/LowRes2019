@@ -12,7 +12,6 @@ public class Skully : MonoBehaviour
     Rigidbody2D m_rigidbody;
     Bounds m_allowedZone;
     Transform m_spriteTransform;
-    Transform m_spriteEyeTransform;
 
     void Start()
     {

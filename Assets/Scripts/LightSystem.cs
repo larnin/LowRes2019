@@ -116,6 +116,35 @@ public class LightSystem : MonoBehaviour
         return false;
     }
 
+    public Transform GetNearestLight(Transform transform)
+    {
+        return GetNearestLight(transform.position);
+    }
+
+    public Transform GetNearestLight(Vector2 pos)
+    {
+        if (m_lights.Count == 0)
+            return null;
+
+        Transform bestLight = null;
+        float bestDistance = 100000000;
+        
+        foreach (var l in m_lights)
+        {
+            Vector2 lPos = l.transform.position;
+
+            float distance = (lPos - pos).sqrMagnitude;
+
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                bestLight = l.transform;
+            }
+        }
+
+        return bestLight;
+    }
+
     public List<LightParam> GetLightParams()
     {
         var lights = new List<LightParam>();
