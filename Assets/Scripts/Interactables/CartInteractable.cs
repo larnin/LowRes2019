@@ -11,6 +11,8 @@ public class CartInteractable : BaseInteractable
     [SerializeField] float m_speed = 1;
     [SerializeField] bool m_reverse = false;
     [SerializeField] bool m_onlyOneRide = false;
+    [SerializeField] AudioClip m_soundMove = null;
+    [SerializeField] float m_soundVolume = 1;
 
     bool m_haveRided = false;
     bool m_rideDirection = false;
@@ -52,8 +54,12 @@ public class CartInteractable : BaseInteractable
         m_currentPosZ = target.transform.position.z;
 
         target.transform.parent = transform;
-
-        Jump(transform.position + new Vector3(0, 0, 1), () => { m_riding = true; });
+        
+        Jump(transform.position + new Vector3(0, 0, 1), () =>
+        {
+            Event<PlaySoundEvent>.Broadcast(new PlaySoundEvent(m_soundMove, m_soundVolume, true));
+            m_riding = true;
+        });
     }
     
     void Start()
@@ -95,6 +101,7 @@ public class CartInteractable : BaseInteractable
                 dPos.y = 0;
                 m_riding = false;
                 m_rideDirection = !m_rideDirection;
+                Event<StopSoundEvent>.Broadcast(new StopSoundEvent(m_soundMove));
                 Jump(new Vector3(nextPos.x + (dPos.x > 0 ? deltaJump : -deltaJump), nextPos.y, m_currentPosZ), OnExitCart);
             }
 

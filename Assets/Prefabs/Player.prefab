@@ -108,6 +108,8 @@ MonoBehaviour:
   m_pushLayer:
     serializedVersion: 2
     m_Bits: 1024
+  m_soundPush: {fileID: 8300000, guid: 391c67b88e378be45bb7b88b2c15bc76, type: 3}
+  m_soundVolume: 0.3
 --- !u!114 &1493807506498735671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +175,8 @@ MonoBehaviour:
     type: 3}
   m_deathTime: 1
   m_shakePower: 0.5
+  m_soundDeath: {fileID: 8300000, guid: 14344f6fd1b3ab34991b5c9dc8ffc53a, type: 3}
+  m_soundVolume: 1
 --- !u!1 &1493807507249754789
 GameObject:
   m_ObjectHideFlags: 0

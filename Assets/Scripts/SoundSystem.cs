@@ -46,6 +46,7 @@ public class SoundSystem : MonoBehaviour
                 s.clip = e.clip;
                 s.loop = e.loop;
                 s.volume = e.volume;
+                s.Play();
                 return;
             }
         }
