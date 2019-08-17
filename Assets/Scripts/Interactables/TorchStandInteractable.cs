@@ -7,6 +7,7 @@ public class TorchStandInteractable : BaseInteractable
     [SerializeField] bool m_haveTorch = true;
     [ShowIf("m_haveTorch")]
     [SerializeField] bool m_alight = true;
+    [SerializeField] bool m_canTake = true;
     
     LightItem m_lightControler;
     Animator m_animator;
@@ -75,7 +76,7 @@ public class TorchStandInteractable : BaseInteractable
         if (OverrideItem(target))
             return true;
 
-        if (m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
+        if (m_canTake && m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
             return true;
 
         return false;
@@ -93,7 +94,7 @@ public class TorchStandInteractable : BaseInteractable
         if (!m_haveTorch && (interact.GetCurrentItem() == ItemType.torch_on || interact.GetCurrentItem() == ItemType.torch_off))
             return "Put";
 
-        if (m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
+        if (m_canTake && m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
             return "Take";
 
             return null;
@@ -114,7 +115,7 @@ public class TorchStandInteractable : BaseInteractable
             SetTorch(true, interact.GetCurrentItem() == ItemType.torch_on);
             interact.SetCurrentItem(ItemType.empty);
         }
-        else if (m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
+        else if (m_canTake && m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
         {
             interact.SetCurrentItem(m_alight ? ItemType.torch_on : ItemType.torch_off);
             SetTorch(false);

@@ -56,7 +56,7 @@ public class BaseInputs : MonoBehaviour
         m_pressState = press;
 
         foreach (var c in m_connectedOutputs)
-            c.SetActiveStatus(press);
+            c.SetActiveStatus(press ^ c.IsConditionInversed()); 
     }
 
     public bool PressState()
