@@ -25,6 +25,8 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] float m_checkPushableDistance = 5;
     [SerializeField] float m_pushSpeed = 1;
     [SerializeField] LayerMask m_pushLayer;
+    [SerializeField] AudioClip m_soundPush = null;
+    [SerializeField] float m_soundVolume = 1;
 
     bool m_grounded = false;
     bool m_jumping = false;
@@ -157,6 +159,8 @@ public class PlayerControler : MonoBehaviour
 
     void UpdatePush()
     {
+        bool oldPush = m_pushing;
+
         if(m_currentPushable != null)
         {
             var r = m_currentPushable.GetComponent<Rigidbody2D>();
@@ -167,16 +171,22 @@ public class PlayerControler : MonoBehaviour
         }
 
         m_pushing = false;
-
-        if (!m_grounded)
+        
+        if (!m_grounded || Mathf.Abs(m_buttonMoveDir) < 0.1f)
+        {
+            if (m_pushing != oldPush)
+                Event<StopSoundEvent>.Broadcast(new StopSoundEvent(m_soundPush));
             return;
-        if (Mathf.Abs(m_buttonMoveDir) < 0.1f)
-            return;
+        }
 
         var obj = Physics2D.Raycast(transform.position, new Vector2(m_buttonMoveDir > 0 ? 1 : -1, 0), m_checkPushableDistance, m_pushLayer.value);
 
         if (obj.collider == null || obj.rigidbody == null || obj.rigidbody.GetComponent<Pushable>() == null)
+        {
+            if (m_pushing != oldPush)
+                Event<StopSoundEvent>.Broadcast(new StopSoundEvent(m_soundPush));
             return;
+        }
         
         var rigidbody = obj.rigidbody;
         var bound = rigidbody.GetComponent<Collider2D>().bounds;
@@ -189,6 +199,9 @@ public class PlayerControler : MonoBehaviour
         m_rigidbody.velocity = velocity;
 
         m_pushing = true;
+
+        if (m_pushing != oldPush)
+            Event<PlaySoundEvent>.Broadcast(new PlaySoundEvent(m_soundPush, m_soundVolume, true));
     }
 
     void UpdateLadder()

@@ -97,6 +97,8 @@ MonoBehaviour:
   m_speed: 50
   m_reverse: 0
   m_onlyOneRide: 0
+  m_soundMove: {fileID: 8300000, guid: 456948939849d104b89b1a250d55d126, type: 3}
+  m_soundVolume: 0.3
 --- !u!61 &4449033425074640344
 BoxCollider2D:
   m_ObjectHideFlags: 0

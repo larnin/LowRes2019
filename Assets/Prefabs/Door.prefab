@@ -170,3 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4134f5d572af5b941b7c1b1845064762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_soundOpen: {fileID: 8300000, guid: 766e631ed5c017042b26abe8b4a06462, type: 3}
+  m_soundClose: {fileID: 8300000, guid: 66a5461f86341374aac43c1283026ab5, type: 3}
+  m_soundMoving: {fileID: 8300000, guid: 8fca5ecc97e6889478ff397497c5231a, type: 3}
+  m_soundVolume: 0.5
+  m_soundDelay: 0.3

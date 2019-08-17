@@ -12,7 +12,7 @@ public class TorchItem : BaseInteractable
     LightItem m_lightControler;
     Animator m_animator;
 
-    void Start()
+    void Awake()
     {
         m_lightControler = GetComponentInChildren<LightItem>();
         if (m_lightControler == null)

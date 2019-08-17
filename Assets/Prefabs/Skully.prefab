@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_seeDistance: 100000
   m_allowedArea: {fileID: 0}
-  m_moveSpeed: 5
+  m_moveSpeed: 15
   m_wallLayer:
     serializedVersion: 2
     m_Bits: 1024

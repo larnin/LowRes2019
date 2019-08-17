@@ -9,6 +9,8 @@ public class PlayerLife : MonoBehaviour
     [SerializeField] GameObject m_deathPrefab = null;
     [SerializeField] float m_deathTime = 1;
     [SerializeField] float m_shakePower = 1;
+    [SerializeField] AudioClip m_soundDeath = null;
+    [SerializeField] float m_soundVolume = 1;
 
     float m_darkTime = 0;
     bool m_saturatedDarkness = false;
@@ -46,6 +48,7 @@ public class PlayerLife : MonoBehaviour
         Destroy(obj, m_deathTime);
         Destroy(gameObject);
 
+        Event<PlaySoundEvent>.Broadcast(new PlaySoundEvent(m_soundDeath, m_soundVolume));
         Event<PlayerDeathEvent>.Broadcast(new PlayerDeathEvent());
     }
 
