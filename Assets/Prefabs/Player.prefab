@@ -87,9 +87,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d661ce97f5989f04f8accc311ad6365f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 25
   m_moveSpeedLadder: 15
-  m_jumpPower: 22
+  m_jumpPower: 23
   m_jumpHoldTime: 0.3
   m_jumpPressMaxDelay: 0.2
   m_groundDistance: 1.2
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_pushSpeed: 5
   m_pushLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1
   m_soundPush: {fileID: 8300000, guid: 391c67b88e378be45bb7b88b2c15bc76, type: 3}
   m_soundVolume: 0.3
 --- !u!114 &1493807506498735671
