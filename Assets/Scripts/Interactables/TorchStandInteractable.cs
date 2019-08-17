@@ -9,13 +9,16 @@ public class TorchStandInteractable : BaseInteractable
     [SerializeField] bool m_alight = true;
     
     LightItem m_lightControler;
+    Animator m_animator;
 
     private void Start()
     {
         m_lightControler = GetComponentInChildren<LightItem>();
         if (m_lightControler == null)
             Debug.LogError("The torch stand need a LightItem");
-        m_lightControler.gameObject.SetActive(m_alight && m_haveTorch);
+
+        m_animator = GetComponent<Animator>();
+        SetTorch(m_haveTorch, m_alight);
     }
 
     void SetTorch(bool haveTorch, bool alight = true)
@@ -24,6 +27,9 @@ public class TorchStandInteractable : BaseInteractable
         m_alight = alight;
         
         m_lightControler.gameObject.SetActive(m_alight && m_haveTorch);
+
+        m_animator.SetBool("Torch", haveTorch);
+        m_animator.SetBool("Alight", alight);
     }
 
     void SetAlight(bool alight)
@@ -31,6 +37,8 @@ public class TorchStandInteractable : BaseInteractable
         m_alight = alight;
         
         m_lightControler.gameObject.SetActive(m_alight && m_haveTorch);
+
+        m_animator.SetBool("Alight", alight);
     }
 
     bool HaveTorch()
@@ -101,17 +109,15 @@ public class TorchStandInteractable : BaseInteractable
         {
             SetAlight(true);
         }
-
-        if (!m_haveTorch && (interact.GetCurrentItem() == ItemType.torch_on || interact.GetCurrentItem() == ItemType.torch_off))
+        else if (!m_haveTorch && (interact.GetCurrentItem() == ItemType.torch_on || interact.GetCurrentItem() == ItemType.torch_off))
         {
             SetTorch(true, interact.GetCurrentItem() == ItemType.torch_on);
             interact.SetCurrentItem(ItemType.empty);
         }
-
-        if (m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
+        else if (m_haveTorch && interact.GetCurrentItem() == ItemType.empty)
         {
-            SetTorch(false);
             interact.SetCurrentItem(m_alight ? ItemType.torch_on : ItemType.torch_off);
+            SetTorch(false);
         }
     }
 }

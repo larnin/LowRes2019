@@ -6,8 +6,11 @@ public class TorchItem : BaseInteractable
     [SerializeField] bool m_alight;
     [SerializeField] float m_waterDetectionRadius = 1;
     [SerializeField] LayerMask m_waterLayer;
+    [SerializeField] float m_groundCheckDistance = 1;
+    [SerializeField] LayerMask m_groundLayer;
 
     LightItem m_lightControler;
+    Animator m_animator;
 
     void Start()
     {
@@ -15,6 +18,7 @@ public class TorchItem : BaseInteractable
         if (m_lightControler == null)
             Debug.LogError("The torch need a LightItem");
         m_lightControler.gameObject.SetActive(m_alight);
+        m_animator = GetComponent<Animator>();
     }
 
     public override bool CanUseAction1(GameObject target)
@@ -49,14 +53,20 @@ public class TorchItem : BaseInteractable
             if (c != null)
                 SetAlight(false);
         }
+
+        var ground = Physics2D.Raycast(transform.position, Vector2.down, m_groundCheckDistance, m_groundLayer.value);
+        bool grounded = ground.collider != null;
+
+        m_animator.SetBool("Alight", m_alight);
+        m_animator.SetBool("Grounded", grounded);
     }
 
-    bool IsAlight()
+    public bool IsAlight()
     {
         return m_alight;
     }
 
-    void SetAlight(bool alight)
+    public void SetAlight(bool alight)
     {
         if (m_alight == alight)
             return;

@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_radius: 20
+  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1118858927005307847
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,8 +57,9 @@ GameObject:
   - component: {fileID: 1118858927005307844}
   - component: {fileID: 1118858927005307845}
   - component: {fileID: 1118858927005307846}
+  - component: {fileID: 9067093715084793188}
   m_Layer: 12
-  m_Name: Torch
+  m_Name: TorchOn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,6 +145,29 @@ MonoBehaviour:
   m_waterLayer:
     serializedVersion: 2
     m_Bits: 16
+  m_groundCheckDistance: 2.5
+  m_groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!95 &9067093715084793188
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118858927005307847}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 15bce9d6bff4a5f48b020d5706717b67, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9168688384024578214
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +179,7 @@ GameObject:
   - component: {fileID: 4819537088454968225}
   - component: {fileID: 8777109906091210067}
   m_Layer: 0
-  m_Name: Torch on the ground
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -18,8 +18,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] LayerMask m_interactionLayer;
     [SerializeField] float m_waterDetectionRadius = 1;
     [SerializeField] LayerMask m_waterLayer;
-    [SerializeField] GameObject m_torchOnPrefab = null;
-    [SerializeField] GameObject m_torchOffPrefab = null;
+    [SerializeField] GameObject m_torchPrefab = null;
     [SerializeField] float m_throwPower = 1;
     [SerializeField] float m_throwAngle = 10;
     [SerializeField] Vector2 m_dropOffset = new Vector2(0, 2);
@@ -152,7 +151,8 @@ public class PlayerInteract : MonoBehaviour
     {
         if (m_itemType == ItemType.torch_off || m_itemType == ItemType.torch_on)
         {
-            var obj = Instantiate(m_itemType == ItemType.torch_on ? m_torchOnPrefab : m_torchOffPrefab);
+            var obj = Instantiate(m_torchPrefab);
+            obj.GetComponent<TorchItem>().SetAlight(m_itemType == ItemType.torch_on);
 
             var offset = m_dropOffset;
             var facing = m_controler.IsFacingRight();
@@ -169,11 +169,12 @@ public class PlayerInteract : MonoBehaviour
     {
         if (m_itemType == ItemType.torch_off || m_itemType == ItemType.torch_on)
         {
-            var obj = Instantiate(m_itemType == ItemType.torch_on ? m_torchOnPrefab : m_torchOffPrefab);
+            var obj = Instantiate(m_torchPrefab);
+            obj.GetComponent<TorchItem>().SetAlight(m_itemType == ItemType.torch_on);
 
             var offset = m_dropOffset;
             var facing = m_controler.IsFacingRight();
-            if (!facing)
+            if (facing)
                 offset.x *= -1;
 
             obj.transform.position = transform.position + new Vector3(m_dropOffset.x, m_dropOffset.y, 0);
@@ -182,10 +183,14 @@ public class PlayerInteract : MonoBehaviour
             if(rigidbody != null)
             {
                 var dir = new Vector2(Mathf.Cos(m_throwAngle), Mathf.Sin(m_throwAngle)) * m_throwPower;
-                if (!facing)
+                if (facing)
                     dir.x *= -1;
                 rigidbody.velocity = dir;
             }
+
+            //to check later
+            //var animator = GetComponent<Animator>();
+            //animator.SetTrigger("ThrowTorch");
 
             SetCurrentItem(ItemType.empty);
         }

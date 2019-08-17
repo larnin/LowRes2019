@@ -69,7 +69,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 71560edc73f083c49a5a92b7d94b377f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_moveSpeed: 20
   m_moveSpeedLadder: 15
-  m_jumpPower: 10
+  m_jumpPower: 22
   m_jumpHoldTime: 0.3
   m_jumpPressMaxDelay: 0.2
   m_groundDistance: 1.2
@@ -103,6 +103,11 @@ MonoBehaviour:
   m_ladderLayer:
     serializedVersion: 2
     m_Bits: 2048
+  m_checkPushableDistance: 4
+  m_pushSpeed: 5
+  m_pushLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &1493807506498735671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,12 +128,10 @@ MonoBehaviour:
   m_waterLayer:
     serializedVersion: 2
     m_Bits: 16
-  m_torchOnPrefab: {fileID: 1118858927005307847, guid: 4bef8bc239d7ffe419a0d082f08fb5e1,
+  m_torchPrefab: {fileID: 1118858927005307847, guid: 4bef8bc239d7ffe419a0d082f08fb5e1,
     type: 3}
-  m_torchOffPrefab: {fileID: 818794531372146718, guid: 6f958fe9a320046429318a1ce37201ca,
-    type: 3}
-  m_throwPower: 1
-  m_throwAngle: 10
+  m_throwPower: 40
+  m_throwAngle: 40
   m_dropOffset: {x: 0, y: 2}
 --- !u!95 &4914299716412428781
 Animator:
@@ -161,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b876146b30e8d2d4c8ced7c2b14b230b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_darkDuration: 5
+  m_darkDuration: 7
   m_lightRecovery: 2.5
   m_deadlyLayer:
     serializedVersion: 2

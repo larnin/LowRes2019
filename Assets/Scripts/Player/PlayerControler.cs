@@ -22,10 +22,14 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] float m_deadzone = 0.1f;
     [SerializeField] LayerMask m_groundLayer;
     [SerializeField] LayerMask m_ladderLayer;
+    [SerializeField] float m_checkPushableDistance = 5;
+    [SerializeField] float m_pushSpeed = 1;
+    [SerializeField] LayerMask m_pushLayer;
 
     bool m_grounded = false;
     bool m_jumping = false;
     float m_jumpDuration = 0;
+    bool m_pushing = false;
 
     float m_buttonMoveDir = 0;
     float m_buttonVerticalDir = 0;
@@ -49,6 +53,8 @@ public class PlayerControler : MonoBehaviour
     bool m_idle;
 
     bool m_disabledControles = false;
+
+    GameObject m_currentPushable = null;
 
     private void Awake()
     {
@@ -126,13 +132,18 @@ public class PlayerControler : MonoBehaviour
 
     void UpdateSpeed()
     {
-        var velocity = m_rigidbody.velocity;
+        UpdatePush();
 
-        if (m_onLadder)
-            velocity.x = m_moveSpeedLadder * m_buttonMoveDir;
-        else velocity.x = m_moveSpeed * m_buttonMoveDir;
+        Vector2 velocity = m_rigidbody.velocity; ;
 
-        m_rigidbody.velocity = velocity;
+        if(!m_pushing)
+        {
+            if (m_onLadder)
+                velocity.x = m_moveSpeedLadder * m_buttonMoveDir;
+            else velocity.x = m_moveSpeed * m_buttonMoveDir;
+
+            m_rigidbody.velocity = velocity;
+        }
 
         if (Mathf.Abs(velocity.x) > 0.1f)
         {
@@ -142,6 +153,42 @@ public class PlayerControler : MonoBehaviour
             m_idle = false;
         }
         else m_idle = true;
+    }
+
+    void UpdatePush()
+    {
+        if(m_currentPushable != null)
+        {
+            var r = m_currentPushable.GetComponent<Rigidbody2D>();
+            var v = r.velocity;
+            v.x = 0;
+            r.velocity = v;
+            m_currentPushable = null;
+        }
+
+        m_pushing = false;
+
+        if (!m_grounded)
+            return;
+        if (Mathf.Abs(m_buttonMoveDir) < 0.1f)
+            return;
+
+        var obj = Physics2D.Raycast(transform.position, new Vector2(m_buttonMoveDir > 0 ? 1 : -1, 0), m_checkPushableDistance, m_pushLayer.value);
+
+        if (obj.collider == null || obj.rigidbody == null || obj.rigidbody.GetComponent<Pushable>() == null)
+            return;
+        
+        var rigidbody = obj.rigidbody;
+        var bound = rigidbody.GetComponent<Collider2D>().bounds;
+        var pos = rigidbody.position;
+        pos.x = transform.position.x + (m_buttonMoveDir > 0 ? 1 : -1) * (m_checkPushableDistance + bound.size.x / 2);
+        rigidbody.position = pos;
+
+        var velocity = m_rigidbody.velocity;
+        velocity.x = m_buttonMoveDir * m_pushSpeed;
+        m_rigidbody.velocity = velocity;
+
+        m_pushing = true;
     }
 
     void UpdateLadder()
@@ -227,7 +274,6 @@ public class PlayerControler : MonoBehaviour
         string fallingName = "Falling";
         string pushStateName = "PushState"; //0 = none, 1 = grab, 2 = push, 3 = pull
         string ladderStateName = "LadderState"; //0 = none, 1 = idle, 2 = down, 3 = up
-        string throwTorchName = "ThrowTorch";
         string torchStateName = "TorchState"; //0 = empty, 1 = off, 2 = on
 
         var velocity = m_rigidbody.velocity;
@@ -247,12 +293,12 @@ public class PlayerControler : MonoBehaviour
         }
         else
         {
-            m_animator.SetBool(idleName, m_grounded && m_idle);
-            m_animator.SetBool(walkName, m_grounded && !m_idle);
+            m_animator.SetBool(idleName, m_grounded && m_idle && !m_pushing);
+            m_animator.SetBool(walkName, m_grounded && !m_idle && !m_pushing);
             m_animator.SetBool(jumpingName, !m_grounded && velocity.y > 0);
             m_animator.SetBool(fallingName, !m_grounded && velocity.y < 0);
 
-            m_animator.SetInteger(pushStateName, 0);
+            m_animator.SetInteger(pushStateName, m_pushing ? 2 : 0);
             m_animator.SetInteger(ladderStateName, 0);
         }
     }
