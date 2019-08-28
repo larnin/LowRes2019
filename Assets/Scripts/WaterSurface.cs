@@ -155,7 +155,12 @@ public class WaterSurface : MonoBehaviour
 
         float delta = GetVerticeDelta();
 
-        for(int i = 0; i < m_vertexs.Count; i++)
+        int min = Mathf.FloorToInt((pos - m_splashSize) / delta);
+        min = Mathf.Clamp(min, 0, m_vertexs.Count);
+        int max = Mathf.CeilToInt((pos + m_splashSize) / delta) + 1;
+        max = Mathf.Clamp(max, 0, m_vertexs.Count);
+
+        for (int i = min; i < max; i++)
         {
             float x = i * delta;
 
@@ -215,7 +220,12 @@ public class WaterSurface : MonoBehaviour
         float heightSum = 0;
         float delta = GetVerticeDelta();
 
-        for(int i = 0; i < m_vertexs.Count; i++)
+        int min = Mathf.FloorToInt((pos - m_spreadDistance) / delta);
+        min = Mathf.Clamp(min, 0, m_vertexs.Count);
+        int max = Mathf.CeilToInt((pos + m_spreadDistance) / delta) + 1;
+        max = Mathf.Clamp(max, 0, m_vertexs.Count);
+
+        for (int i = min; i < max; i++)
         {
             float h = GetSpreadValue(i * delta - pos);
             heightSum += h;
